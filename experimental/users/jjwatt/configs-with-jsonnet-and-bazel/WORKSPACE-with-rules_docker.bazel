@@ -1,0 +1,149 @@
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+rules_python_version = "740825b7f74930c62f44af95c9a4c1bd428d2c53" # Latest @ 2021-06-23
+
+http_archive(
+    name = "rules_python",
+    sha256 = "09a3c4791c61b62c2cbc5b2cbea4ccc32487b38c7a2cc8f87a794d7a659cc742",
+    strip_prefix = "rules_python-{}".format(rules_python_version),
+    url = "https://github.com/bazelbuild/rules_python/archive/{}.zip".format(rules_python_version),
+)
+
+http_archive(
+    name = "io_bazel_rules_jsonnet",
+    sha256 = "7f51f859035cd98bcf4f70dedaeaca47fe9fbae6b199882c516d67df416505da",
+    strip_prefix = "rules_jsonnet-0.3.0",
+    urls = ["https://github.com/bazelbuild/rules_jsonnet/archive/0.3.0.tar.gz"],
+)
+
+
+# http_archive(
+#     name = "io_bazel_rules_jsonnet",
+#     urls = [
+#         # "http://mirror.bazel.build/github.com/bazelbuild/rules_jsonnet/archive/0.0.2.tar.gz",
+#         "https://github.com/bazelbuild/rules_jsonnet/archive/0.1.0.tar.gz",
+#     ],
+# #    sha256 = "5f788c7719a02ed2483641365f194e9e5340fbe54963d6d6caa09f91454d38b8",
+#     strip_prefix = "rules_jsonnet-0.1.0",
+# )
+
+
+# local_repository(
+#     name = "io_bazel_rules_jsonnet",
+#     path = "../../../bazelbuild/rules_jsonnet"
+# )
+
+
+# Use an old jsonnet repo because the newer ones are failing to build on macOS
+http_archive(
+    name = "io_bazel_rules_go",
+    sha256 = "8e968b5fcea1d2d64071872b12737bbb5514524ee5f0a4f54f5920266c261acb",
+    urls = [
+         "https://mirror.bazel.build/github.com/bazelbuild/rules_go/releases/download/v0.28.0/rules_go-v0.28.0.zip",
+        "https://github.com/bazelbuild/rules_go/releases/download/v0.28.0/rules_go-v0.28.0.zip",
+    ],
+)
+
+## bazel-toolchains rules
+http_archive(
+    name = "bazel_toolchains",
+    sha256 = "1adf5db506a7e3c465a26988514cfc3971af6d5b3c2218925cd6e71ee443fc3f",
+    strip_prefix = "bazel-toolchains-4.0.0",
+    urls = [
+        "https://github.com/bazelbuild/bazel-toolchains/releases/download/4.0.0/bazel-toolchains-4.0.0.tar.gz",
+        "https://mirror.bazel.build/github.com/bazelbuild/bazel-toolchains/releases/download/4.0.0/bazel-toolchains-4.0.0.tar.gz",
+    ],
+)
+
+load("@bazel_toolchains//rules:rbe_repo.bzl", "rbe_autoconfig")
+
+# Creates a default toolchain config for RBE.
+# Use this as is if you are using the rbe_ubuntu16_04 container,
+# otherwise refer to RBE docs.
+rbe_autoconfig(name = "rbe_default")
+
+
+load("@io_bazel_rules_jsonnet//jsonnet:jsonnet.bzl", "jsonnet_repositories")
+
+jsonnet_repositories()
+
+# Go is failing to build on macOS, so don't setup the go repositories.
+# load("@jsonnet_go//bazel:repositories.bzl", "jsonnet_go_repositories")
+
+jsonnet_go_repositories()
+
+load("@jsonnet_go//bazel:deps.bzl", "jsonnet_go_dependencies")
+
+jsonnet_go_dependencies()
+
+
+# http_archive(
+#     name = "bazel_skylib",
+#     urls = [
+#         "https://github.com/bazelbuild/bazel-skylib/releases/download/1.0.3/bazel-skylib-1.0.3.tar.gz",
+#         "https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/1.0.3/bazel-skylib-1.0.3.tar.gz",
+#     ],
+#     sha256 = "1c531376ac7e5a180e0237938a2536de0c54d93f5c278634818e0efc952dd56c",
+# )
+# load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
+
+# bazel_skylib_workspace()
+
+# OPTIONAL: Call this to override the default docker toolchain configuration.
+# This call should be placed BEFORE the call to "container_repositories" below
+# to actually override the default toolchain configuration.
+# Note this is only required if you actually want to call
+# docker_toolchain_configure with a custom attr; please read the toolchains
+# docs in /toolchains/docker/ before blindly adding this to your WORKSPACE.
+# BEGIN OPTIONAL segment:
+# load("@io_bazel_rules_docker//toolchains/docker:toolchain.bzl",
+#     docker_toolchain_configure="toolchain_configure"
+# )
+# docker_toolchain_configure(
+#   name = "docker_config",
+#   # OPTIONAL: Path to a directory which has a custom docker client config.json.
+#   # See https://docs.docker.com/engine/reference/commandline/cli/#configuration-files
+#   # for more details.
+#   # client_config="<enter absolute path to your docker config directory here>",
+#   # OPTIONAL: Path to the docker binary.
+#   # Should be set explicitly for remote execution.
+#   # docker_path="<enter absolute path to the docker binary (in the remote exec env) here>",
+#   # OPTIONAL: Path to the gzip binary.
+#   # gzip_path="<enter absolute path to the gzip binary (in the remote exec env) here>",
+#   # OPTIONAL: Bazel target for the gzip tool.
+#   # gzip_target="<enter absolute path (i.e., must start with repo name @...//:...) to an executable gzip target>",
+#   # OPTIONAL: Path to the xz binary.
+#   # Should be set explicitly for remote execution.
+#   # xz_path="<enter absolute path to the xz binary (in the remote exec env) here>",
+#   # OPTIONAL: List of additional flags to pass to the docker command.
+#   docker_flags = [
+#     "--tls",
+#     "--log-level=info",
+#   ],
+
+# )
+# # End of OPTIONAL segment.
+
+# load(
+#     "@io_bazel_rules_docker//repositories:repositories.bzl",
+#     container_repositories = "repositories",
+# )
+# container_repositories()
+
+# load("@io_bazel_rules_docker//repositories:deps.bzl", container_deps = "deps")
+
+# container_deps()
+
+# load(
+#     "@io_bazel_rules_docker//container:container.bzl",
+#     "container_pull",
+# )
+
+# container_pull(
+#   name = "java_base",
+#   registry = "gcr.io",
+#   repository = "distroless/java",
+#   # 'tag' is also supported, but digest is encouraged for reproducibility.
+#   digest = "sha256:deadbeef",
+# )
+

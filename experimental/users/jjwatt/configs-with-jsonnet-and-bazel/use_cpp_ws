@@ -1,0 +1,6 @@
+#!/bin/bash
+
+set -eu pipefail
+mv WORKSPACE .workspace.bak
+mv WORKSPACE-with-cpp-jsonnet.bazel WORKSPACE
+

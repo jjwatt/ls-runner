@@ -1,0 +1,15 @@
+{
+  "description": "A simple Javascript lambda",
+  "function_name": "js-lambda-simple",
+  "handler": "main.handler",
+  "runtime": "nodejs12.x",
+  "timeout": 3,
+  "memory_size": 128,
+  "reserved_concurrent_executions": -1,
+  "environment_variables": [],
+  "source_path": "src",
+  "output_path": "out/main_handler.zip",
+  "metadata": {
+    "name": "js-lambda-simple"
+  }
+}

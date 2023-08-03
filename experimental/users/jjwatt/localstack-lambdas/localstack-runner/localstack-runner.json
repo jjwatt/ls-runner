@@ -1,0 +1,21 @@
+{
+	"localstack": {
+		"debug": "1",
+		"tmpdir": "/tmp",
+		"services": ["iam", "cloudwatch", "lambda", "apigateway", "s3", "sns", "sqs", "dynamodb"],
+		"lambda_executor": "docker-reuse",
+		"docker_network": "localstack",
+		"lambda_docker_network": "localstack",
+		"localstack_docker_name": "localstack-runner-main",
+		"host_tmp_folder": "/tmp/localstack",
+		"image": "localstack/localstack",
+		"localstack_hostname": "localstack",
+		"localstack_edge_port": "4566"
+	},
+	"aws": {
+		"aws_access_key_id": "test",
+		"aws_secret_access_key": "test",
+		"aws_default_region": "us-east-1",
+		"aws_default_output": "json"
+	}
+}

@@ -1,0 +1,22 @@
+"networks":
+  "default":
+    "external":
+      "name": "localstack"
+"services":
+  "localstack":
+    "container_name": "localstack-runner-main"
+    "environment":
+      - "SERVICES=iam,cloudwatch,lambda,apigateway,s3,sns,sqs,dynamodb"
+      - "DEBUG=1"
+      - "DATA_DIR=${DATA_DIR- }"
+      - "LAMBDA_EXECUTOR=docker-reuse"
+      - "DOCKER_HOST=unix:///var/run/docker.sock"
+      - "HOST_TMP_FOLDER=/tmp/localstack"
+    "image": "localstack/localstack"
+    "ports":
+      - "4566:4566"
+      - "4561:4561"
+    "volumes":
+      - "/tmp/localstack:/tmp/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+"version": "3.8"

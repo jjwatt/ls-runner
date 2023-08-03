@@ -1,0 +1,28 @@
+#try-import %workspace%/user.bazelrc
+#startup --host_jvm_args="-Djavax.net.ssl.trustStore='/Library/Java/JavaVirtualMachines/jdk-16.0.2.jdk/Contents/Home/lib/security/cacerts'"
+#startup --host_jvm_args="-Djavax.net.ssl.trustStore='/Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home/lib/security/cacerts'"
+#startup --host_jvm_args=-Djavax.net.ssl.trustStore=/Users/jwattenbarger/.asdf/installs/java/adoptopenjdk-16.0.1+9/lib/security/cacerts\
+#        --host_jvm_args=-Djavax.net.ssl.trustStorePassword=changeit
+#startup --server_javabase=/Users/jwattenbarger/.asdf/installs/java/adoptopenjdk-16.0.1+9
+
+#build --host_javabase=/Users/jwattenbarger/.asdf/installs/java/adoptopenjdk-16.0.1+9
+#build --jvmopt="-Djavax.net.ssl.trustStore=/Users/jwattenbarger/.asdf/installs/java/adoptopenjdk-16.0.1+9/lib/security/cacerts"
+#build --jvmopt=-Djavax.net.ssl.trustStorePassword='changeit'
+
+# The following flags are only necessary for local docker sandboxing
+# with the rbe-ubuntu16-04 container. Use of these flags is still experimental.
+# Note your WORKSPACE must contain an rbe_autoconfig target with
+# name="rbe_default"
+# build:docker-sandbox --crosstool_top=@rbe_default//cc:toolchain
+# build:docker-sandbox --host_javabase=@rbe_default//java:jdk
+# build:docker-sandbox --javabase=@rbe_default//java:jdk
+# build:docker-sandbox --host_java_toolchain=@bazel_tools//tools/jdk:toolchain_hostjdk8
+# build:docker-sandbox --java_toolchain=@bazel_tools//tools/jdk:toolchain_hostjdk8
+# build:docker-sandbox --experimental_docker_image=gcr.io/cloud-marketplace/google/rbe-ubuntu16-04@sha256:latest
+# build:docker-sandbox --spawn_strategy=docker
+# build:docker-sandbox --strategy=Javac=docker
+# build:docker-sandbox --strategy=Closure=docker
+# build:docker-sandbox --strategy=Genrule=docker
+# build:docker-sandbox --define=EXECUTOR=remote
+# build:docker-sandbox --experimental_docker_verbose
+# build:docker-sandbox --experimental_enable_docker_sandbox

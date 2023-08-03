@@ -1,0 +1,52 @@
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+rules_python_version = "740825b7f74930c62f44af95c9a4c1bd428d2c53" # Latest @ 2021-06-23
+
+http_archive(
+    name = "rules_python",
+    sha256 = "09a3c4791c61b62c2cbc5b2cbea4ccc32487b38c7a2cc8f87a794d7a659cc742",
+    strip_prefix = "rules_python-{}".format(rules_python_version),
+    url = "https://github.com/bazelbuild/rules_python/archive/{}.zip".format(rules_python_version),
+)
+
+# http_archive(
+#     name = "io_bazel_rules_jsonnet",
+#     sha256 = "7f51f859035cd98bcf4f70dedaeaca47fe9fbae6b199882c516d67df416505da",
+#     strip_prefix = "rules_jsonnet-0.3.0",
+#     urls = ["https://github.com/bazelbuild/rules_jsonnet/archive/0.3.0.tar.gz"],
+# )
+
+
+http_archive(
+    name = "io_bazel_rules_jsonnet",
+    urls = [
+        # "http://mirror.bazel.build/github.com/bazelbuild/rules_jsonnet/archive/0.0.2.tar.gz",
+        "https://github.com/bazelbuild/rules_jsonnet/archive/0.1.0.tar.gz",
+    ],
+#    sha256 = "5f788c7719a02ed2483641365f194e9e5340fbe54963d6d6caa09f91454d38b8",
+    strip_prefix = "rules_jsonnet-0.1.0",
+)
+
+
+# local_repository(
+#     name = "io_bazel_rules_jsonnet",
+#     path = "../../../bazelbuild/rules_jsonnet"
+# )
+
+load("@io_bazel_rules_jsonnet//jsonnet:jsonnet.bzl", "jsonnet_repositories")
+
+jsonnet_repositories()
+
+# load("@jsonnet_go//bazel:repositories.bzl", "jsonnet_go_repositories")
+
+# jsonnet_go_repositories()
+
+# load("@jsonnet_go//bazel:deps.bzl", "jsonnet_go_dependencies")
+
+# jsonnet_go_dependencies()
+
+load("@rules_python//python:pip.bzl", "pip_install")
+
+pip_install(
+    requirements = "//:requirements.txt",
+)
